@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux"; // Higher order component, allow modify component to acces redux stuff
+import { createStructuredSelector } from "reselect";
 
 import { auth } from "../../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectror";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
@@ -37,11 +40,10 @@ const Header = ({ currentUser, hidden }) => (
   </div>
 );
 
-// This function allows to get the state (root reducer)
-// state=root-reducr, user=user-reducer currentUser: state.user.currentUser,
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
-  currentUser,
-  hidden,
+// createStructuredSelector pass de state to the selector
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
 });
 
 // Higher order component (like connect) takes a component as an argument
