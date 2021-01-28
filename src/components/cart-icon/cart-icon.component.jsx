@@ -16,10 +16,12 @@ const CartIcon = ({ toggleCartHidden, itemCount }) => (
   </div>
 );
 
+// 873699 Returns state from redux store
 const mapDispatchToProps = (dispatch) => ({
   toggleCartHidden: () => dispatch(toggleCartHidden()),
 });
 
+// Allow sate teaking
 // A selector is used to memoize the calculation
 const mapStateToProps = createStructuredSelector({
   itemCount: selectCartItemsCount,
