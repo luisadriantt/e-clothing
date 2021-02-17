@@ -44,6 +44,50 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 firebase.initializeApp(config);
 
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  // group all calls into one request
+  const batch = firestore.batch();
+  // use forEach instead of map because dont return a new array like map
+  objectsToAdd.forEach((obj) => {
+    const newDocFerf = collectionRef.doc(); // returns a new id gernerated by firebase
+    batch.set(newDocFerf, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
+  // ".docs" will return the querysnapshot array!!!!
+  const transformedCollection = collectionsSnapshot.docs.map((doc) => {
+    // querysnapshot data
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  /* 
+  Returns a map of the collection using
+  the reduce function where the -key- is
+  the collection title in lower case and
+  the -value- is the collection of that
+  item
+  */
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 

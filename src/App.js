@@ -38,6 +38,12 @@ class App extends React.Component {
       } else {
         setCurrentUser(userAuth);
       }
+      // upload shop data to firebase
+      /*
+      addCollectionAndDocuments(
+        "collections",
+        collectionsArray.map(({ title, items }) => ({ title, items }))
+      ); */
     });
   }
 
@@ -72,6 +78,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  //collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchProps = (dispatch) => ({
