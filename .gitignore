@@ -2,15 +2,15 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
+/client/.pnp
+/client/.pnp.js
 /client/node_modules
 
 # testing
-/coverage
+/client/coverage
 
 # production
-/build
+/client/build
 
 # misc
 .DS_Store
@@ -19,9 +19,16 @@
 .env.test.local
 .env.production.local
 .eslintcache
+/client/.DS_Store
+/client/.env.local
+/client/.env.development.local
+/client/.env.test.local
+/client/.env.production.local
 /.vscode
 .env
 .lock
+
+/client/npm-debug.log*
 
 npm-debug.log*
 yarn-debug.log*
