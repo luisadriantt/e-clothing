@@ -21,6 +21,7 @@
 .eslintcache
 /.vscode
 .env
+.lock
 
 npm-debug.log*
 yarn-debug.log*
