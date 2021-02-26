@@ -1,7 +1,5 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import "./App.css";
 
@@ -12,15 +10,21 @@ import CheckoutPage from "./pages/checkout/checkout.component.jsx";
 
 import Header from "./components/header/header.component.jsx";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-import { setCurrentUser } from "./redux/user/user.actions";
-import { selectCurrentUser } from "./redux/user/user.selectror";
+
+import CurrentUserContext from "./context/current-user/current-user.context";
 
 class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null,
+    };
+  }
+
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -28,7 +32,7 @@ class App extends React.Component {
         // Get the snapShot from the reference with the data ...
         // ... and set state with the user data
         userRef.onSnapshot((snapShot) => {
-          setCurrentUser({
+          this.setState({
             currentUser: {
               id: snapShot.id,
               ...snapShot.data(),
@@ -36,7 +40,7 @@ class App extends React.Component {
           });
         });
       } else {
-        setCurrentUser(userAuth);
+        this.setState({ currentUser: userAuth });
       }
       // upload shop data to firebase
       /*
@@ -54,7 +58,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <CurrentUserContext.Provider value={this.state.currentUser}>
+          <Header />
+        </CurrentUserContext.Provider>
         <Switch>
           <Route exact path="/" component={HomePage}></Route>
           <Route path="/shop" component={ShopPage}></Route>
@@ -63,7 +69,7 @@ class App extends React.Component {
             exact
             path="/signin"
             render={() =>
-              this.props.currentUser ? (
+              this.state.currentUser ? (
                 <Redirect to="/" />
               ) : (
                 <SignInAndSignUpPage />
@@ -76,13 +82,4 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  //collectionsArray: selectCollectionsForPreview,
-});
-
-const mapDispatchProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchProps)(App);
+export default App;

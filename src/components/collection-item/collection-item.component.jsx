@@ -1,15 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
 
 import CustomButton from "../custom-button/custom-button.component";
-import { addItem } from "../../redux/cart/cart.actions";
+
+import { CartContext } from "../../providers/cart/cart.provider";
 
 import "./collection-item.styles.scss";
 
 // Funtion wrapped with {} means
 // rendering multiple js out of this function
-const CollectionItem = ({ item, addItem }) => {
+const CollectionItem = ({ item }) => {
   const { name, price, imageUrl } = item;
+  const { addItem } = useContext(CartContext);
 
   return (
     <div className="collection-item">
@@ -34,8 +35,4 @@ const CollectionItem = ({ item, addItem }) => {
   );
 };
 
-const mapDispatchToProps = (dispathc) => ({
-  addItem: (item) => dispathc(addItem(item)),
-});
-
-export default connect(null, mapDispatchToProps)(CollectionItem);
+export default CollectionItem;

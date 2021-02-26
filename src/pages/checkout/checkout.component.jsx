@@ -1,64 +1,48 @@
-import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import React, { useContext } from "react";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
 
-import {
-  selectCartItems,
-  selectCartTotal,
-} from "../../redux/cart/cart.selectors";
+import { CartContext } from "../../providers/cart/cart.provider";
 
 import "./checkout.styles.scss";
 
-const CheckoutPage = ({ cartItems, total }) => (
-  <div className="checkout-page">
-    <div className="checkout-header">
-      <div className="header-block">
-        <span>Product</span>
-      </div>
-      <div className="header-block">
-        <span>Description</span>
-      </div>
-      <div className="header-block">
-        <span>Quantity</span>
-      </div>
-      <div className="header-block">
-        <span>Price</span>
-      </div>
-      <div className="header-block">
-        <span>Remove</span>
-      </div>
-    </div>
-    {cartItems.map((cartItem) => (
-      <CheckoutItem key={cartItem.id} cartItem={cartItem}></CheckoutItem>
-    ))}
-    <div className="total">
-      <span> TOTAL ${total}</span>
-    </div>
-    <div className="test-warning">
-      For Testing:
-      <tr>
-        <th>NUMBER</th>
-        <th>BRAND</th>
-        <th>CVC</th>
-        <th>DATE</th>
-      </tr>
-      <tr>
-        <td>4242424242424242 </td>
-        <td>Visa </td>
-        <td>Any 3 digits </td>
-        <td>Any future date </td>
-      </tr>
-    </div>
-    <StripeCheckoutButton price={total} />
-  </div>
-);
+const CheckoutPage = () => {
+  const { cartItems, totalPriceCount } = useContext(CartContext);
 
-const mapStateToProps = createStructuredSelector({
-  cartItems: selectCartItems,
-  total: selectCartTotal,
-});
+  return (
+    <div className="checkout-page">
+      <div className="checkout-header">
+        <div className="header-block">
+          <span>Product</span>
+        </div>
+        <div className="header-block">
+          <span>Description</span>
+        </div>
+        <div className="header-block">
+          <span>Quantity</span>
+        </div>
+        <div className="header-block">
+          <span>Price</span>
+        </div>
+        <div className="header-block">
+          <span>Remove</span>
+        </div>
+      </div>
+      {cartItems.map((cartItem) => (
+        <CheckoutItem key={cartItem.id} cartItem={cartItem}></CheckoutItem>
+      ))}
+      <div className="total">
+        <span> TOTAL ${totalPriceCount}</span>
+      </div>
+      <div className="test-warning">
+        For Testing:
+        <br></br>
+        <h3>4242424242424242 </h3>
+      </div>
+      <StripeCheckoutButton price={totalPriceCount} />
+    </div>
+  );
+};
 
-export default connect(mapStateToProps)(CheckoutPage);
+export default CheckoutPage;
