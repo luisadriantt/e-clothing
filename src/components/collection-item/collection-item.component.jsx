@@ -1,14 +1,14 @@
 import React from "react";
-import { connect } from "react-redux";
+
+import { addItem } from "../../graphql/cart.actions";
 
 import CustomButton from "../custom-button/custom-button.component";
-import { addItem } from "../../redux/cart/cart.actions";
 
 import "./collection-item.styles.scss";
 
 // Funtion wrapped with {} means
 // rendering multiple js out of this function
-const CollectionItem = ({ item, addItem }) => {
+const CollectionItem = ({ item }) => {
   const { name, price, imageUrl } = item;
 
   return (
@@ -34,8 +34,4 @@ const CollectionItem = ({ item, addItem }) => {
   );
 };
 
-const mapDispatchToProps = (dispathc) => ({
-  addItem: (item) => dispathc(addItem(item)),
-});
-
-export default connect(null, mapDispatchToProps)(CollectionItem);
+export default CollectionItem;
