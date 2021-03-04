@@ -1,15 +1,15 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 4242;
 const path = require("path");
 const compression = require("compression");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 // This is your real test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-app.use(compression);
 app.use(express.static("."));
 app.use(express.json());
+app.use(compression);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
@@ -31,4 +31,7 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 });
 
-app.listen(4242, () => console.log("Node server listening on port 4242!"));
+app.listen(port, (error) => {
+  if (error) throw error;
+  console.log("Server running on port " + port);
+});
