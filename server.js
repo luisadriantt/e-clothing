@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
-const path = require('path');
+const path = require("path");
+const compression = require("compression");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 // This is your real test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+app.use(compression);
 app.use(express.static("."));
 app.use(express.json());
 
