@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 4242;
 const path = require("path");
+const enforce = require("express-sslify");
 // const compression = require("compression");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
@@ -19,6 +20,10 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
 }
+
+app.get("service-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "build", "service-worker.js"));
+});
 
 app.post("/create-payment-intent", async (req, res) => {
   const { items } = req.body;
