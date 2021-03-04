@@ -3,14 +3,14 @@ const app = express();
 const port = process.env.PORT || 4242;
 const path = require("path");
 const enforce = require("express-sslify");
-// const compression = require("compression");
+const compression = require("compression");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 // This is your real test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 app.use(express.static("."));
 app.use(express.json());
-// app.use(compression);
+app.use(compression());
 
 if (process.env.NODE_ENV === "production") {
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
