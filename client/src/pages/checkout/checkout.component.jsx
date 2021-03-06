@@ -46,6 +46,7 @@ const CheckoutPage = ({ cartItems, total }) => {
           <div className="payment-column">
             <h1> Payment </h1>
             <StripeForm total={total} />
+            <h3>Test card: 4242 4242 4242 4242</h3>
           </div>
         </div>
       </div>
